@@ -63,9 +63,12 @@ class _RootState extends State<Root> {
             /// زر الرجوع للصفحة السابقة
             GestureDetector(
               onTap: () {
-                setState(() {
-                  controller.jumpToPage(sellectedIndex--);
-                });
+                if (sellectedIndex > 0) {
+                  setState(() {
+                    sellectedIndex--;
+                    controller.jumpToPage(sellectedIndex);
+                  });
+                }
               },
               child: Container(
                 width: 60,
@@ -92,9 +95,12 @@ class _RootState extends State<Root> {
             /// زر التقدم للصفحة التالية
             GestureDetector(
               onTap: () {
-                setState(() {
-                  controller.jumpToPage(sellectedIndex++);
-                });
+                if (sellectedIndex < screens.length - 1) {
+                  setState(() {
+                    sellectedIndex++;
+                    controller.jumpToPage(sellectedIndex);
+                  });
+                }
               },
               child: Container(
                 width: 150,
