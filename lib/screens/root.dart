@@ -10,56 +10,44 @@ class Root extends StatefulWidget {
   State<Root> createState() => _RootState();
 }
 
-class _RootState extends State<Root> {
+class _RootState extends State<Root> with AutomaticKeepAliveClientMixin {
   ///
-  ///
-  final PageController controller = PageController();
+  final PageController controller = PageController(keepPage: true);
 
   ///
-  ///
-  List<Widget> screens = [
+  final List<Widget> screens = const [
     MultiSellection(),
     ToggleSellection(),
     MultiImageSellect(),
   ];
 
   ///
-  ///
   int sellectedIndex = 0;
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      ///
-      ///
-      body: PageView(
-        ///
-        ///
-        controller: controller,
+    super.build(context);
 
-        ///
-        ///
+    return Scaffold(
+      body: PageView.builder(
+        controller: controller,
+        itemCount: screens.length,
         onPageChanged: (v) {
           setState(() {
             sellectedIndex = v;
           });
         },
-
-        ///
-        ///
-        children: screens,
+        itemBuilder: (context, index) {
+          return screens[index];
+        },
       ),
 
-      ///
-      ///
-      ///
-      ///
       ///
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(20),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ///
             /// زر الرجوع للصفحة السابقة
             GestureDetector(
               onTap: () {
@@ -77,8 +65,8 @@ class _RootState extends State<Root> {
                   border: Border.all(color: Colors.black),
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
+                child: const Padding(
+                  padding: EdgeInsets.all(10.0),
                   child: Icon(
                     Icons.arrow_back_ios_new_outlined,
                     color: Colors.black,
@@ -87,11 +75,8 @@ class _RootState extends State<Root> {
               ),
             ),
 
-            ///
-            ///
-            SizedBox(width: 20),
+            const SizedBox(width: 20),
 
-            ///
             /// زر التقدم للصفحة التالية
             GestureDetector(
               onTap: () {
@@ -109,8 +94,8 @@ class _RootState extends State<Root> {
                   color: Colors.black,
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
+                child: const Padding(
+                  padding: EdgeInsets.all(10.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -137,4 +122,7 @@ class _RootState extends State<Root> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
