@@ -15,10 +15,10 @@ class _RootState extends State<Root> with AutomaticKeepAliveClientMixin {
   final PageController controller = PageController(keepPage: true);
 
   ///
-  final List<Widget> screens = const [
+  final List<Widget> screens = [
     MultiSellection(),
-    ToggleSellection(),
     MultiImageSellect(),
+    ToggleSellection(),
   ];
 
   ///
@@ -30,6 +30,7 @@ class _RootState extends State<Root> with AutomaticKeepAliveClientMixin {
 
     return Scaffold(
       body: PageView.builder(
+        physics: NeverScrollableScrollPhysics(),
         controller: controller,
         itemCount: screens.length,
         onPageChanged: (v) {
