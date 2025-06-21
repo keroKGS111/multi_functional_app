@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 class MultiSellection extends StatefulWidget {
@@ -121,9 +122,10 @@ class _MultiSellectionState extends State<MultiSellection>
             ),
             sellectedIndex != null
                 ? Expanded(
-                  child: Text(
+                  child: AutoSizeText(
                     "Your sellection is ${gifts[sellectedIndex!]["name"].toString().toUpperCase()}",
                     style: TextStyle(color: Colors.white, fontSize: 25),
+                    maxLines: 1,
                   ),
                 )
                 : SizedBox.shrink(),
