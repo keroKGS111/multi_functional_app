@@ -1,7 +1,7 @@
-// ignore_for_file: must_be_immutable
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:multi_functional_app/provider/image_sellestion_provider.dart';
+import 'package:provider/provider.dart';
 
 class MultiImageSellect extends StatefulWidget {
   const MultiImageSellect({super.key});
@@ -24,87 +24,90 @@ class _MultiImageSellectState extends State<MultiImageSellect>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Scaffold(
-      backgroundColor: Color(0xcbfdee00),
-      //
-      //
-      body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              height: 300,
-              width: double.infinity,
-              child:
-                  sellectionIndex == null
-                      ? Center(
-                        child: AutoSizeText(
-                          "Please, Sellect your favourite laptop",
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.black54,
+    return ChangeNotifierProvider(
+      create: (context) => ImageSellestionProvider(),
+      child: Scaffold(
+        backgroundColor: Color(0xcbfdee00),
+        //
+        //
+        body: SafeArea(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: 300,
+                width: double.infinity,
+                child:
+                    sellectionIndex == null
+                        ? Center(
+                          child: AutoSizeText(
+                            "Please, Sellect your favourite laptop",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.black54,
+                            ),
+                            maxLines: 1,
                           ),
-                          maxLines: 1,
+                        )
+                        : InteractiveViewer(
+                          panEnabled: true, // يسمح بالتحريك
+                          scaleEnabled: true, // يسمح بالتكبير
+                          minScale: 1,
+                          maxScale: 4,
+                          child: Image.asset(
+                            laptops[sellectionIndex!]["image"],
+                            fit: BoxFit.cover,
+                          ),
                         ),
-                      )
-                      : InteractiveViewer(
-                        panEnabled: true, // يسمح بالتحريك
-                        scaleEnabled: true, // يسمح بالتكبير
-                        minScale: 1,
-                        maxScale: 4,
-                        child: Image.asset(
-                          laptops[sellectionIndex!]["image"],
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-            ),
-            SizedBox(height: 20),
-            sellectionIndex != null
-                ? Text(
-                  laptops[sellectionIndex!]["name"],
-                  style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.black54,
-                  ),
-                )
-                : SizedBox.shrink(),
-            SizedBox(height: 20),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: List.generate(laptops.length, (index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: InkWell(
-                      onTap: () {
-                        setState(() {
-                          sellectionIndex = index;
-                        });
-                      },
-                      child: AnimatedContainer(
-                        duration: Duration(microseconds: 1),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.white),
-                          color:
-                              sellectionIndex == index
-                                  ? Colors.green[400]
-                                  : Colors.transparent,
-                        ),
-                        width: 200,
-                        height: 200,
-                        child: Image.asset(
-                          laptops[index]["image"],
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                  );
-                }),
               ),
-            ),
-          ],
+              SizedBox(height: 20),
+              sellectionIndex != null
+                  ? Text(
+                    laptops[sellectionIndex!]["name"],
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.black54,
+                    ),
+                  )
+                  : SizedBox.shrink(),
+              SizedBox(height: 20),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: List.generate(laptops.length, (index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: InkWell(
+                        onTap: () {
+                          setState(() {
+                            sellectionIndex = index;
+                          });
+                        },
+                        child: AnimatedContainer(
+                          duration: Duration(microseconds: 1),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.white),
+                            color:
+                                sellectionIndex == index
+                                    ? Colors.green[400]
+                                    : Colors.transparent,
+                          ),
+                          width: 200,
+                          height: 200,
+                          child: Image.asset(
+                            laptops[index]["image"],
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    );
+                  }),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
