@@ -20,6 +20,8 @@ class SellectionProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  int get sellectionIndex => sellectionIndex;
+
   bool isSelected(int index) {
     return sellectedIndex == index;
   }

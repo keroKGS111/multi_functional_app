@@ -12,15 +12,6 @@ class MultiImageSellect extends StatefulWidget {
 
 class _MultiImageSellectState extends State<MultiImageSellect>
     with AutomaticKeepAliveClientMixin {
-  List<Map> laptops = [
-    {"name": "Mac Book", "image": "assets/images/laptop/labtop1.png"},
-    {"name": "HUAWEI", "image": "assets/images/laptop/labtop2.png"},
-    {"name": "Hp", "image": "assets/images/laptop/labtop3.png"},
-    {"name": "Microsoft", "image": "assets/images/laptop/labtop4.png"},
-  ];
-
-  int? sellectionIndex;
-
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -28,86 +19,90 @@ class _MultiImageSellectState extends State<MultiImageSellect>
       create: (context) => ImageSellestionProvider(),
       child: Scaffold(
         backgroundColor: Color(0xcbfdee00),
-        //
-        //
-        body: SafeArea(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                height: 300,
-                width: double.infinity,
-                child:
-                    sellectionIndex == null
-                        ? Center(
-                          child: AutoSizeText(
-                            "Please, Sellect your favourite laptop",
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w700,
-                              color: Colors.black54,
+        body: Consumer<ImageSellestionProvider>(
+          builder: (context, multiImageSellection, child) {
+            final selectedIndex = multiImageSellection.sellectionIndex;
+
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: 300,
+                  width: double.infinity,
+                  child:
+                      selectedIndex == null
+                          ? Center(
+                            child: AutoSizeText(
+                              "Please, Select your favourite laptop",
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.black54,
+                              ),
+                              maxLines: 1,
                             ),
-                            maxLines: 1,
+                          )
+                          : InteractiveViewer(
+                            panEnabled: true,
+                            scaleEnabled: true,
+                            minScale: 1,
+                            maxScale: 4,
+                            child: Image.asset(
+                              multiImageSellection
+                                  .laptops[selectedIndex]["image"],
+                              fit: BoxFit.cover,
+                            ),
                           ),
-                        )
-                        : InteractiveViewer(
-                          panEnabled: true, // يسمح بالتحريك
-                          scaleEnabled: true, // يسمح بالتكبير
-                          minScale: 1,
-                          maxScale: 4,
-                          child: Image.asset(
-                            laptops[sellectionIndex!]["image"],
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-              ),
-              SizedBox(height: 20),
-              sellectionIndex != null
-                  ? Text(
-                    laptops[sellectionIndex!]["name"],
-                    style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.black54,
-                    ),
-                  )
-                  : SizedBox.shrink(),
-              SizedBox(height: 20),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: List.generate(laptops.length, (index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: InkWell(
-                        onTap: () {
-                          setState(() {
-                            sellectionIndex = index;
-                          });
-                        },
-                        child: AnimatedContainer(
-                          duration: Duration(microseconds: 1),
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.white),
-                            color:
-                                sellectionIndex == index
-                                    ? Colors.green[400]
-                                    : Colors.transparent,
-                          ),
-                          width: 200,
-                          height: 200,
-                          child: Image.asset(
-                            laptops[index]["image"],
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                    );
-                  }),
                 ),
-              ),
-            ],
-          ),
+                SizedBox(height: 20),
+                selectedIndex != null
+                    ? Text(
+                      multiImageSellection.laptops[selectedIndex]["name"],
+                      style: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.black54,
+                      ),
+                    )
+                    : SizedBox.shrink(),
+                SizedBox(height: 20),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: List.generate(
+                      multiImageSellection.laptops.length,
+                      (index) {
+                        return Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: InkWell(
+                            onTap: () {
+                              multiImageSellection.sellectedItem(index);
+                            },
+                            child: AnimatedContainer(
+                              duration: Duration(milliseconds: 200),
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.white),
+                                color:
+                                    multiImageSellection.isSellected(index)
+                                        ? Colors.green[400]
+                                        : Colors.transparent,
+                              ),
+                              width: 200,
+                              height: 200,
+                              child: Image.asset(
+                                multiImageSellection.laptops[index]["image"],
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ],
+            );
+          },
         ),
       ),
     );

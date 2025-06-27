@@ -8,4 +8,15 @@ class ImageSellestionProvider extends ChangeNotifier {
     {"name": "Microsoft", "image": "assets/images/laptop/labtop4.png"},
   ];
   int? sellectionIndex;
+
+  sellectedItem(int index) {
+    sellectionIndex = index;
+    notifyListeners();
+  }
+
+  int? get sellectedIndex => sellectionIndex;
+
+  bool isSellected(int index) {
+    return sellectionIndex != null && sellectionIndex == index;
+  }
 }
